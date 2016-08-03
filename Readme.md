@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Мария Патрушева](https://up.htmlacademy.ru/javascript/6/user/55631).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Демешкин](https://up.htmlacademy.ru/javascript/6/user/228539).
 
 ---
 
