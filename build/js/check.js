@@ -10,11 +10,31 @@ function getMessage(a, b) {
       return 'Переданное GIF-изображение не анимировано';
     }
   }
-  else if (a.length > 0) {
-    var amountOfRedPoints = a.reduce (function(sum, current) {
-      return sum + current;
-    }, 0);
+  else if (Array.isArray(a) && Array.isArray(b)) {
+    var artifactsSquare = 0;
+    var minArray = a;
+    var maxArray = b;
+
+    if (a.length > b.length) {
+      minArray = b;
+      maxArray = a;
+    }
+
+    for (var i = 0; i < maxArray.length; i++) {
+      if (i < minArray.length) {
+        artifactsSquare += minArray[i]*maxArray[i];
+      } else {
+        artifactsSquare += maxArray[i];
+      }
+    }
+    return 'Общая площадь артефактов сжатия: ' + [artifactsSquare] + ' пикселей';
+  }
+  else if (Array.isArray(a)) {
+    var amountOfRedPoints = 0;
+    for (var i = 0; i < a.length; i++) {
+      amountOfRedPoints += a[i];
+    }
+  }
     return 'Количество красных точек во всех строчках изображения: ' + [amountOfRedPoints];
   }
-
 };
