@@ -1,3 +1,31 @@
+function prodArray(a, b) {
+  var artifactsSquare = 0;
+  var minArray = a;
+  var maxArray = b;
+
+  if (a.length > b.length) {
+    minArray = b;
+    maxArray = a;
+  }
+
+  for (var i = 0; i < maxArray.length; i++) {
+    if (i < minArray.length) {
+      artifactsSquare += minArray[i]*maxArray[i];
+    } else {
+      artifactsSquare += maxArray[i];
+    }
+  }
+  return artifactsSquare;
+}
+
+function summArrey(a, b) {
+  var amountOfRedPoints = 0;
+  for (var i = 0; i < a.length; i++) {
+    amountOfRedPoints += a[i];
+  }
+  return amountOfRedPoints;
+}
+
 function getMessage(a, b) {
   if (typeof a == 'number') {
     return 'Переданное SVG-изображение содержит ' + [a] + ' объектов и ' + [b + 4] + ' атрибутов';
@@ -11,30 +39,11 @@ function getMessage(a, b) {
     }
   }
   else if (Array.isArray(a) && Array.isArray(b)) {
-    var artifactsSquare = 0;
-    var minArray = a;
-    var maxArray = b;
-
-    if (a.length > b.length) {
-      minArray = b;
-      maxArray = a;
-    }
-
-    for (var i = 0; i < maxArray.length; i++) {
-      if (i < minArray.length) {
-        artifactsSquare += minArray[i]*maxArray[i];
-      } else {
-        artifactsSquare += maxArray[i];
-      }
-    }
+    var artifactsSquare = prodArray(a, b);
     return 'Общая площадь артефактов сжатия: ' + [artifactsSquare] + ' пикселей';
   }
   else if (Array.isArray(a)) {
-    var amountOfRedPoints = 0;
-    for (var i = 0; i < a.length; i++) {
-      amountOfRedPoints += a[i];
-    }
-  }
+    var amountOfRedPoints = summArrey(a, b);
     return 'Количество красных точек во всех строчках изображения: ' + [amountOfRedPoints];
   }
-};
+}
