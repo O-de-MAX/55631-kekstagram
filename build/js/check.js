@@ -1,5 +1,5 @@
 function prodArray(a, b) {
-  var artifactsSquare = 0;
+  var sum = 0;
   var minArray = a;
   var maxArray = b;
 
@@ -7,23 +7,23 @@ function prodArray(a, b) {
     minArray = b;
     maxArray = a;
   }
-
+  
   for (var i = 0; i < maxArray.length; i++) {
     if (i < minArray.length) {
-      artifactsSquare += minArray[i]*maxArray[i];
+      sum += minArray[i] * maxArray[i];
     } else {
-      artifactsSquare += maxArray[i];
+      sum += maxArray[i];
     }
   }
-  return artifactsSquare;
+  return sum;
 }
 
-function summArrey(a, b) {
-  var amountOfRedPoints = 0;
+function summArray(a) {
+  var summ = 0;
   for (var i = 0; i < a.length; i++) {
-    amountOfRedPoints += a[i];
+    summ += a[i];
   }
-  return amountOfRedPoints;
+  return summ;
 }
 
 function getMessage(a, b) {
@@ -39,11 +39,9 @@ function getMessage(a, b) {
     }
   }
   else if (Array.isArray(a) && Array.isArray(b)) {
-    var artifactsSquare = prodArray(a, b);
-    return 'Общая площадь артефактов сжатия: ' + [artifactsSquare] + ' пикселей';
+    return 'Общая площадь артефактов сжатия: ' + [prodArray(a, b)] + ' пикселей';
   }
   else if (Array.isArray(a)) {
-    var amountOfRedPoints = summArrey(a, b);
-    return 'Количество красных точек во всех строчках изображения: ' + [amountOfRedPoints];
+    return 'Количество красных точек во всех строчках изображения: ' + [summArray(a)];
   }
 }
