@@ -88,15 +88,7 @@
       // canvas'a поэтому важно вовремя поменять их, если нужно начать отрисовку
       // чего-либо с другой обводкой.
 
-      // Толщина линии.
-      this._ctx.lineWidth = 6;
-      // Цвет обводки.
-      this._ctx.strokeStyle = '#ffe753';
-      // Размер штрихов. Первый элемент массива задает длину штриха, второй
-      // расстояние между соседними штрихами.
-      this._ctx.setLineDash([15, 10]);
-      // Смещение первого штриха от начала линии.
-      this._ctx.lineDashOffset = 7;
+
 
       // Сохранение состояния канваса.
       this._ctx.save();
@@ -111,29 +103,31 @@
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
 
-      // Отрисовка прямоугольника, обозначающего область изображения после
-      // кадрирования. Координаты задаются от центра.
-      this._ctx.strokeRect(
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2,
-          this._resizeConstraint.side - this._ctx.lineWidth / 2);
+      // Рамка точками
 
-      // Первый вариант оверлея, статичный
-/*
-      this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-      this._ctx.beginPath();
-      this._ctx.moveTo((-this._container.width / 2), (-this._container.height / 2));
-      this._ctx.lineTo((this._container.width / 2), (-this._container.height / 2));
-      this._ctx.lineTo((this._container.width / 2), (this._container.height / 2));
-      this._ctx.lineTo((-this._container.width / 2), (this._container.height / 2));
-      this._ctx.moveTo((-this._resizeConstraint.side / 2 - this._ctx.lineWidth), (-this._resizeConstraint.side / 2 - this._ctx.lineWidth));
-      this._ctx.lineTo((this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2), (-this._resizeConstraint.side / 2 - this._ctx.lineWidth));
-      this._ctx.lineTo((this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2), (this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2));
-      this._ctx.lineTo((-this._resizeConstraint.side / 2 - this._ctx.lineWidth), (this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2));
-      this._ctx.fill('evenodd');
-*/
+      var a = -this._resizeConstraint.side / 2;
+      var b = -this._resizeConstraint.side / 2;
+      var r = 4;
 
+      while (b <= this._resizeConstraint.side / 2) {
+        while (a <= this._resizeConstraint.side / 2) {
+          this._ctx.fillStyle = '#ffe753';
+          this._ctx.beginPath();
+          this._ctx.arc(a, b, r, 0, 2 * Math.PI, false);
+          this._ctx.closePath();
+          this._ctx.fill();
+
+          if (b === -this._resizeConstraint.side / 2 || b === this._resizeConstraint.side / 2) {
+            a += (r * 3);
+          } else {
+            a += this._resizeConstraint.side;
+          }
+        }
+        b += (r * 3);
+        a = -this._resizeConstraint.side / 2;
+      }
+
+      // Оверлей
       this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
       this._ctx.beginPath();
       this._ctx.moveTo(displX, displY);
