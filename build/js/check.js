@@ -7,7 +7,7 @@ function prodArray(a, b) {
     minArray = b;
     maxArray = a;
   }
-  
+
   for (var i = 0; i < maxArray.length; i++) {
     if (i < minArray.length) {
       sum += minArray[i] * maxArray[i];
@@ -28,7 +28,7 @@ function summArray(a) {
 
 function getMessage(a, b) {
   if (typeof a == 'number') {
-    return 'Переданное SVG-изображение содержит ' + [a] + ' объектов и ' + [b + 4] + ' атрибутов';
+    return 'Переданное SVG-изображение содержит ' + [a] + ' объектов и ' + [b * 4] + ' атрибутов';
   }
   else if (typeof a == 'boolean') {
     if (a == true) {

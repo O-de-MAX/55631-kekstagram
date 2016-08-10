@@ -119,6 +119,38 @@
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
 
+      // Первый вариант оверлея, статичный
+/*
+      this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      this._ctx.beginPath();
+      this._ctx.moveTo((-this._container.width / 2), (-this._container.height / 2));
+      this._ctx.lineTo((this._container.width / 2), (-this._container.height / 2));
+      this._ctx.lineTo((this._container.width / 2), (this._container.height / 2));
+      this._ctx.lineTo((-this._container.width / 2), (this._container.height / 2));
+      this._ctx.moveTo((-this._resizeConstraint.side / 2 - this._ctx.lineWidth), (-this._resizeConstraint.side / 2 - this._ctx.lineWidth));
+      this._ctx.lineTo((this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2), (-this._resizeConstraint.side / 2 - this._ctx.lineWidth));
+      this._ctx.lineTo((this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2), (this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2));
+      this._ctx.lineTo((-this._resizeConstraint.side / 2 - this._ctx.lineWidth), (this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2));
+      this._ctx.fill('evenodd');
+*/
+
+      this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      this._ctx.beginPath();
+      this._ctx.moveTo(displX, displY);
+      this._ctx.lineTo(displX + this._container.width, displY);
+      this._ctx.lineTo(displX + this._container.width, displY + this._container.height);
+      this._ctx.lineTo(displX, displY + this._container.height);
+      this._ctx.moveTo((-this._resizeConstraint.side / 2 - this._ctx.lineWidth), (-this._resizeConstraint.side / 2 - this._ctx.lineWidth));
+      this._ctx.lineTo((this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2), (-this._resizeConstraint.side / 2 - this._ctx.lineWidth));
+      this._ctx.lineTo((this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2), (this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2));
+      this._ctx.lineTo((-this._resizeConstraint.side / 2 - this._ctx.lineWidth), (this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2));
+      this._ctx.fill('evenodd');
+
+      // Текст на оверлее
+      this._ctx.fillStyle = '#ffffff';
+      this._ctx.textAlign = 'center';
+      this._ctx.fillText(this._image.naturalWidth + 'x' + this._image.naturalHeight, 0, (-this._resizeConstraint.side / 2 - 2 * this._ctx.lineWidth));
+
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
       // следующий кадр рисовался с привычной системой координат, где точка
@@ -126,6 +158,7 @@
       // некорректно сработает даже очистка холста или нужно будет использовать
       // сложные рассчеты для координат прямоугольника, который нужно очистить.
       this._ctx.restore();
+
     },
 
     /**
