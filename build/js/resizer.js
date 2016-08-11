@@ -103,47 +103,51 @@
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
 
-      // Рамка точками
+      // Оверлей и рамка точками
 
-      var a = -this._resizeConstraint.side / 2;
-      var b = -this._resizeConstraint.side / 2;
+      var x = 0;
+      var y = 0;
       var r = 4;
+      var step = r * 3;
+      var min = 0;
+      var max = Math.floor(this._resizeConstraint.side / step) * step;
 
-      while (b <= this._resizeConstraint.side / 2) {
-        while (a <= this._resizeConstraint.side / 2) {
-          this._ctx.fillStyle = '#ffe753';
-          this._ctx.beginPath();
-          this._ctx.arc(a, b, r, 0, 2 * Math.PI, false);
-          this._ctx.closePath();
-          this._ctx.fill();
-
-          if (b === -this._resizeConstraint.side / 2 || b === this._resizeConstraint.side / 2) {
-            a += (r * 3);
-          } else {
-            a += this._resizeConstraint.side;
-          }
-        }
-        b += (r * 3);
-        a = -this._resizeConstraint.side / 2;
-      }
-
-      // Оверлей
       this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
       this._ctx.beginPath();
       this._ctx.moveTo(displX, displY);
       this._ctx.lineTo(displX + this._container.width, displY);
       this._ctx.lineTo(displX + this._container.width, displY + this._container.height);
       this._ctx.lineTo(displX, displY + this._container.height);
-      this._ctx.moveTo((-this._resizeConstraint.side / 2 - this._ctx.lineWidth), (-this._resizeConstraint.side / 2 - this._ctx.lineWidth));
-      this._ctx.lineTo((this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2), (-this._resizeConstraint.side / 2 - this._ctx.lineWidth));
-      this._ctx.lineTo((this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2), (this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2));
-      this._ctx.lineTo((-this._resizeConstraint.side / 2 - this._ctx.lineWidth), (this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2));
+      this._ctx.moveTo(-this._resizeConstraint.side / 2, -this._resizeConstraint.side / 2);
+      this._ctx.lineTo((-this._resizeConstraint.side / 2 + max), -this._resizeConstraint.side / 2);
+      this._ctx.lineTo((-this._resizeConstraint.side / 2 + max), (-this._resizeConstraint.side / 2 + max));
+      this._ctx.lineTo(-this._resizeConstraint.side / 2, (-this._resizeConstraint.side / 2 + max));
       this._ctx.fill('evenodd');
 
       // Текст на оверлее
       this._ctx.fillStyle = '#ffffff';
       this._ctx.textAlign = 'center';
-      this._ctx.fillText(this._image.naturalWidth + 'x' + this._image.naturalHeight, 0, (-this._resizeConstraint.side / 2 - 2 * this._ctx.lineWidth));
+      this._ctx.fillText(this._image.naturalWidth + 'x' + this._image.naturalHeight, 0, (-this._resizeConstraint.side / 2 - 6 * this._ctx.lineWidth));
+
+      // Рамка точками
+
+      while (y <= max) {
+        while (x <= max) {
+          this._ctx.fillStyle = '#ffe753';
+          this._ctx.beginPath();
+          this._ctx.arc((x - this._resizeConstraint.side / 2), (y - this._resizeConstraint.side / 2), r, 0, 2 * Math.PI, false);
+          this._ctx.closePath();
+          this._ctx.fill();
+
+          if (y === min || y === max) {
+            x += step;
+          } else {
+            x += max;
+          }
+        }
+        y += step;
+        x = min;
+      }
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
