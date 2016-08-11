@@ -131,13 +131,17 @@
 
       // Рамка точками
 
+      this.drawDottedFrame = function() {
+        this._ctx.fillStyle = '#ffe753';
+        this._ctx.beginPath();
+        this._ctx.arc((x - this._resizeConstraint.side / 2), (y - this._resizeConstraint.side / 2), r, 0, 2 * Math.PI, false);
+        this._ctx.closePath();
+        this._ctx.fill();
+      };
+
       while (y <= max) {
         while (x <= max) {
-          this._ctx.fillStyle = '#ffe753';
-          this._ctx.beginPath();
-          this._ctx.arc((x - this._resizeConstraint.side / 2), (y - this._resizeConstraint.side / 2), r, 0, 2 * Math.PI, false);
-          this._ctx.closePath();
-          this._ctx.fill();
+          this.drawDottedFrame();
 
           if (y === min || y === max) {
             x += step;
