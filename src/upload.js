@@ -93,14 +93,6 @@
    */
   var resizeForm = document.forms['upload-resize'];
 
-  var fwd = resizeForm.fwd;
-  resizeForm.addEventListener('input', function() {
-    if (resizeFormIsValid()) {
-      fwd.removeAttribute('disabled');
-    } else {
-      fwd.setAttribute('disabled', 'disabled');
-    }
-  });
   /**
    * Форма добавления фильтра.
    * @type {HTMLFormElement}
@@ -222,6 +214,13 @@
     }
   };
 
+  resizeForm.addEventListener('input', function() {
+    if (resizeFormIsValid()) {
+      resizeForm.fwd.removeAttribute('disabled');
+    } else {
+      resizeForm.fwd.setAttribute('disabled', 'disabled');
+    }
+  });
   /**
    * Сброс формы фильтра. Показывает форму кадрирования.
    * @param {Event} evt
