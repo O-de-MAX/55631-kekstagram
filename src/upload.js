@@ -72,15 +72,21 @@
    * @return {boolean}
    */
   function resizeFormIsValid() {
-    return true;
-  }
+    var x = +resizeForm.x.value;
+    var y = +resizeForm.y.value;
+    var size = +resizeForm.size.value;
 
+    if ((size + x) <= currentResizer._image.naturalWidth && (size + y) <= currentResizer._image.naturalHeight) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   /**
    * Форма загрузки изображения.
    * @type {HTMLFormElement}
    */
   var uploadForm = document.forms['upload-select-image'];
-
   /**
    * Форма кадрирования изображения.
    * @type {HTMLFormElement}
@@ -208,6 +214,13 @@
     }
   };
 
+  resizeForm.addEventListener('input', function() {
+    if (resizeFormIsValid()) {
+      resizeForm.fwd.removeAttribute('disabled');
+    } else {
+      resizeForm.fwd.setAttribute('disabled', 'disabled');
+    }
+  });
   /**
    * Сброс формы фильтра. Показывает форму кадрирования.
    * @param {Event} evt
