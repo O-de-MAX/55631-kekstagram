@@ -23,6 +23,8 @@
     CUSTOM: 2
   };
 
+  var browserCookies = require('browser-cookies');
+
   /**
    * Регулярное выражение, проверяющее тип загружаемого файла. Составляется
    * из ключей FileType.
@@ -239,6 +241,16 @@
    */
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
+
+    function filterFormCookieExpirationTime() {
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var precedingDate = new Date((todayYear - 1), 11, 1);
+
+      return (today - precedingDate) / (1000 * 60 * 60 * 24);
+    }
+
+    browserCookies.set('upload-filter', filterForm['upload-filter'].value, {expires: filterFormCookieExpirationTime()});
 
     cleanupResizer();
     updateBackground();
