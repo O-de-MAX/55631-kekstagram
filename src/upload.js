@@ -23,6 +23,8 @@
     CUSTOM: 2
   };
 
+  var browserCookies = require('browser-cookies');
+
   /**
    * Регулярное выражение, проверяющее тип загружаемого файла. Составляется
    * из ключей FileType.
@@ -181,15 +183,21 @@
    * и обновляет фон.
    * @param {Event} evt
    */
-  resizeForm.onreset = function(evt) {
-    evt.preventDefault();
-
+  resizeForm.onreset = function() {
     cleanupResizer();
     updateBackground();
-
+    uploadForm.reset();
     resizeForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
   };
+
+  resizeForm.addEventListener('input', function() {
+    if (resizeFormIsValid()) {
+      resizeForm.fwd.removeAttribute('disabled');
+    } else {
+      resizeForm.fwd.setAttribute('disabled', 'disabled');
+    }
+  });
 
   /**
    * Обработка отправки формы кадрирования. Если форма валидна, экспортирует
@@ -201,7 +209,6 @@
 
     if (resizeFormIsValid()) {
       var image = currentResizer.exportImage().src;
-
       var thumbnails = filterForm.querySelectorAll('.upload-filter-preview');
       for (var i = 0; i < thumbnails.length; i++) {
         thumbnails[i].style.backgroundImage = 'url(' + image + ')';
@@ -214,19 +221,12 @@
     }
   };
 
-  resizeForm.addEventListener('input', function() {
-    if (resizeFormIsValid()) {
-      resizeForm.fwd.removeAttribute('disabled');
-    } else {
-      resizeForm.fwd.setAttribute('disabled', 'disabled');
-    }
-  });
   /**
    * Сброс формы фильтра. Показывает форму кадрирования.
    * @param {Event} evt
    */
-  filterForm.onreset = function(evt) {
-    evt.preventDefault();
+
+  filterForm.onreset = function() {
 
     filterForm.classList.add('invisible');
     resizeForm.classList.remove('invisible');
@@ -239,6 +239,16 @@
    */
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
+
+    function filterFormCookieExpirationTime() {
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var precedingDate = new Date((todayYear - 1), 11, 1);
+
+      return (today - precedingDate) / (1000 * 60 * 60 * 24);
+    }
+
+    browserCookies.set('upload-filter', filterForm['upload-filter'].value, {expires: filterFormCookieExpirationTime()});
 
     cleanupResizer();
     updateBackground();
@@ -274,6 +284,20 @@
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
   };
 
+  function restoreFilterFromCookie() {
+    var savedFilter = browserCookies.get('upload-filter');
+    var filterElement;
+
+    if (savedFilter) {
+      filterElement = document.getElementById('upload-filter-' + savedFilter);
+    }
+
+    if (filterElement) {
+      filterElement.checked = true;
+      filterImage.className = 'filter-image-preview filter-' + savedFilter;
+    }
+  }
   cleanupResizer();
   updateBackground();
+  restoreFilterFromCookie();
 })();
