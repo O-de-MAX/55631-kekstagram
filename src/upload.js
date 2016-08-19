@@ -284,13 +284,20 @@
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
   };
 
-  filterForm.onload = function() {
-    var reternFilter = browserCookies.get('browser-cookies');
+  function restoreFilterFromCookie() {
+    var savedFilter = browserCookies.get('upload-filter');
+    var filterElement;
 
-    var saveFilter = filterForm.getElementById(reternFilter); //такого id нет, а как вставить тот, который есть?
-    saveFilter.checked = true;
-  };
+    if (savedFilter) {
+      filterElement = document.getElementById('upload-filter-' + savedFilter);
+    }
 
+    if (filterElement) {
+      filterElement.checked = true;
+      filterImage.className = 'filter-image-preview filter-' + savedFilter;
+    }
+  }
   cleanupResizer();
   updateBackground();
+  restoreFilterFromCookie();
 })();
