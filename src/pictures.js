@@ -1,16 +1,21 @@
 'use strict';
 
-var createCallback = function(src, loadPicturesCallback) {
-  var elem = document.createElement('script');
-  elem.src = src;
-  document.head.appendChild(elem);
+function loadJSONP(url, callback) {
 
-  var pictures = [];
-  window.loadPicturesCallback = function(data) {
-    pictures = data;
-    console.log(pictures);
+  url += '?callback=JSONPCallback';
+  var newScript = document.createElement('script');
+  newScript.src = url;
+  document.body.appendChild(newScript);
+
+
+  window.JSONPCallback = function() {
+    callback();
   };
-  loadPicturesCallback();
-};
+}
 
-createCallback('http://localhost:1506/api/pictures?callback=loadPicturesCallback');
+var pictures = [];
+
+loadJSONP('/api/pictures', function(data) {
+  pictures = data;
+  console.log(pictures);
+});
