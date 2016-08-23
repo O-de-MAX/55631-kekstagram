@@ -8,8 +8,8 @@ function loadJSONP(url, callback) {
   document.body.appendChild(newScript);
 
 
-  window.JSONPCallback = function() {
-    callback();
+  window.JSONPCallback = function(data) {
+    callback(data);
   };
 }
 
