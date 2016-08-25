@@ -1,14 +1,25 @@
 'use strict';
-(function() {
 
 var filterElements = document.querySelector('.filters');
+
+var picturesContainer = document.querySelector('.pictures');
+var template = document.getElementById('picture-template');
+
+var elementToClone;
+if ('content' in template) {
+  elementToClone = template.content.querySelector('.picture');
+} else {
+  elementToClone = template.querySelector('.picture');
+}
+
+var pictures = [];
+
+
 function hideFilters() {
   filterElements.classList.add('hidden');
 }
-hideFilters();
 
 function loadJSONP(url, callback) {
-
   url += '?callback=JSONPCallback';
   var newScript = document.createElement('script');
   newScript.src = url;
@@ -19,43 +30,32 @@ function loadJSONP(url, callback) {
   };
 }
 
-var pictures = [];
+var getPicturesElement = function(picture) {
+  var pictureElement = elementToClone.cloneNode(true);
+  var imageElement = new Image();
 
-loadJSONP('/api/pictures', function(data) {
-  pictures = data;
-  console.log(pictures);
-});
-
-var picturesContainer = document.querySelector('.pictures');
-var templateElement = document.getElementById('picture-template');
-var elementToClone;
-
-if ('content' in templateElement) {
-  elementToClone = templateElement.content.querySelector('.picture');
-} else {
-  elementToClone = templateElement.querySelector('.picture');
-}
-
-var getPicturesElement = function(data, container) {
-  var element = elementToClone.cloneNode(true);
-  container.appendChild(element);
-
-  var picturesElement = new Image();
-
-  picturesElement.onload = function() {
-    templateElement.content.querySelector('img').src = data.url;
+  imageElement.onload = function() {
+    template.content.querySelector('img').src = picture.url;
   };
-  picturesElement.onerror = function() {
-    element.classList.add('picture-load-failure');
+  imageElement.onerror = function() {
+    pictureElement.classList.add('picture-load-failure');
+  };
+  imageElement.src = picture.url;
 
-  picturesElement.src = data.url;
-
-  return element;
+  return pictureElement;
 };
 
-pictures.forEach(function(picture) {
-  getPicturesElement(picture, picturesContainer);
-});
+
+var renderPictures = function() {
+  pictures.forEach(function(picture) {
+    picturesContainer.appendChild(getPicturesElement(picture));
+  });
+};
 
 
+hideFilters();
+
+loadJSONP('/api/pictures', renderPictures, function(data) {
+  pictures = data;
+  console.log(pictures);
 })();
