@@ -1,21 +1,68 @@
 'use strict';
 
-function loadJSONP(url, callback) {
+(function() {
+  var filterElements = document.querySelector('.filters');
 
-  url += '?callback=JSONPCallback';
-  var newScript = document.createElement('script');
-  newScript.src = url;
-  document.body.appendChild(newScript);
+  var picturesContainer = document.querySelector('.pictures');
+  var template = document.getElementById('picture-template');
+
+  var elementToClone;
+  if ('content' in template) {
+    elementToClone = template.content.querySelector('.picture');
+  } else {
+    elementToClone = template.querySelector('.picture');
+  }
+
+  var pictures = [];
 
 
-  window.JSONPCallback = function(data) {
-    callback(data);
-  };
-}
+  function hideFilters() {
+    filterElements.classList.add('hidden');
+  }
 
-var pictures = [];
+  function showFilters() {
+    filterElements.classList.remove('hidden');
+  }
 
-loadJSONP('/api/pictures', function(data) {
-  pictures = data;
-  console.log(pictures);
-});
+  function loadJSONP(url, callback) {
+    url += '?callback=JSONPCallback';
+    var newScript = document.createElement('script');
+    newScript.src = url;
+    document.body.appendChild(newScript);
+
+    window.JSONPCallback = function(data) {
+      callback(data);
+    };
+  }
+
+  function getPicturesElement(picture) {
+    //debugger;
+    var pictureElement = elementToClone.cloneNode(true);
+    var imageElement = new Image();
+
+    imageElement.onload = function() {
+      pictureElement.querySelector('img').src = picture.url;
+    };
+    imageElement.onerror = function() {
+      pictureElement.classList.add('picture-load-failure');
+    };
+    imageElement.src = picture.url;
+
+    return pictureElement;
+  }
+
+  function renderPictures() {
+    pictures.forEach(function(picture) {
+      picturesContainer.appendChild(getPicturesElement(picture));
+    });
+  }
+
+  hideFilters();
+
+  loadJSONP('/api/pictures', function(data) {
+    pictures = data;
+    console.log(pictures);
+    renderPictures();
+    showFilters();
+  });
+})();
