@@ -36,8 +36,11 @@
   }
 
   function getPicturesElement(picture) {
+    //debugger;
     var pictureElement = elementToClone.cloneNode(true);
     var imageElement = new Image();
+    imageElement.setAttribute('width', 182);
+    imageElement.setAttribute('height', 182);
 
     imageElement.onload = function() {
       template.content.querySelector('img').src = picture.url;
@@ -47,7 +50,7 @@
     };
     imageElement.src = picture.url;
 
-    return pictureElement;
+    return imageElement;
   }
 
   function renderPictures() {
