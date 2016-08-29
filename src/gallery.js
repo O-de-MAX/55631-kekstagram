@@ -1,42 +1,49 @@
 'use strict';
 
 var Gallery = function() {
+
   var galleryContainer = document.querySelector('.gallery-overlay');
   var closeGallery = galleryContainer.querySelector('.gallery-overlay-close');
   var galleryPreview = galleryContainer.querySelector('img');
 
-  var pictures = [];
-  var activePicture = pictures[i];
+  var galleryPictures = [];
+  var activePicture = 0;
 
 
-  var setPictures = function() {
-    galleryPictures = pictures;
+  onCloseGalleryClick = function() {
+    hide();
   };
 
-  var show = function() {
+  galleryPreview.onclick = function() {
+    setActivePicture();
+  };
+
+
+  function setPictures(pictures) {
+    galleryPictures = pictures;
+  }
+
+  function show(picture) {
     galleryContainer.classList.remove('invisible');
     setActivePicture(picture);
-  };
+  }
 
-  var hide = function() {
+  function hide() {
     galleryContainer.classList.add('invisible');
-    closeGallery.removeEventListener('click', onCloseGalleryClick);
-    galleryPreview.removeEventListener('click', onClickGalleryPreview);
-  };
+  }
 
-  var setActivePicture = function(picture) {
-    galleryPreview.src = picture.url;
-  };
+  function setActivePicture(picture) {
+    activePicture = picture;
+    galleryPreview.src = activePicture.url;
+    galleryContainer.querySelector('.likes-count').innerHTML = activePicture.likes;
+    galleryContainer.querySelector('.comments-count').innerHTML = activePicture.comments;
+  }
 
+  closeGallery.onclick = onCloseGalleryClick;
 
-  var galleryElement = getPicturesElement(pictures);
-  var getPicturesElement = require('./pictures');
+  setActivePicture(activePicture);
 
-
-  var onCloseGalleryClick = closeGallery.addEventListener('click', hide);
-  var onClickGalleryPreview = galleryPreview.addEventListener('click', setActivePicture);
-
-};
+}();
 
 
 module.exports = new Gallery();
