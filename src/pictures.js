@@ -1,5 +1,6 @@
 'use strict';
 
+
 var template = document.getElementById('picture-template');
 
 var elementToClone;
@@ -9,7 +10,7 @@ if ('content' in template) {
   elementToClone = template.querySelector('.picture');
 }
 
-module.exports = function(picture) {
+var getPicturesElement = function(picture, index) {
   var pictureElement = elementToClone.cloneNode(true);
   var imageElement = new Image();
 
@@ -21,5 +22,11 @@ module.exports = function(picture) {
   };
   imageElement.src = picture.url;
 
+  pictureElement.addEventListener('click', function() {
+    gallery.show(index);
+  });
+
   return pictureElement;
 };
+
+module.exports = getPicturesElement;

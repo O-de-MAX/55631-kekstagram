@@ -1,49 +1,52 @@
 'use strict';
 
-var Gallery = function() {
+var getPicturesElement = require('./pictures');
 
-  var galleryContainer = document.querySelector('.gallery-overlay');
-  var closeGallery = galleryContainer.querySelector('.gallery-overlay-close');
-  var galleryPreview = galleryContainer.querySelector('img');
+var galleryContainer = document.querySelector('.gallery-overlay');
+var galleryPreview = galleryContainer.querySelector('img');
+var galleryPictures = [];
+var activePicture = 0;
 
-  var galleryPictures = [];
-  var activePicture = 0;
+var Gallery = function(data) {
 
+  this.data = data;
+  this.gallery = getPicturesElement(this.data, galleryContainer);
 
-  onCloseGalleryClick = function() {
-    hide();
+  var self = this;
+
+  this.onGalleryclick = function() {
+    self.show();
   };
 
-  galleryPreview.onclick = function() {
-    setActivePicture();
+  this.closeGallery = galleryContainer.querySelector('.gallery-overlay-close');
+  this.closeGallery.onclick = function() {
+    self.hide();
   };
 
-
-  function setPictures(pictures) {
-    galleryPictures = pictures;
-  }
-
-  function show(picture) {
-    galleryContainer.classList.remove('invisible');
-    setActivePicture(picture);
-  }
-
-  function hide() {
-    galleryContainer.classList.add('invisible');
-  }
-
-  function setActivePicture(picture) {
-    activePicture = picture;
-    galleryPreview.src = activePicture.url;
-    galleryContainer.querySelector('.likes-count').innerHTML = activePicture.likes;
-    galleryContainer.querySelector('.comments-count').innerHTML = activePicture.comments;
-  }
-
-  closeGallery.onclick = onCloseGalleryClick;
-
-  setActivePicture(activePicture);
+  this.gallery.onclick = function() {
+    self.setActivePicture();
+  };
 
 }();
 
+Gallery.prototype.show = function(index) {
+  galleryContainer.classList.remove('invisible');
+  Gallery.prototype.setActivePicture(index);
+};
+
+Gallery.prototype.hide = function() {
+  galleryContainer.classList.add('invisible');
+};
+
+Gallery.prototype.setPictures = function(pictures) {
+  galleryPictures = pictures;
+};
+
+Gallery.prototype.setActivePicture = function(index) {
+  activePicture = index;
+  galleryPreview.src = activePicture.url;
+  galleryContainer.querySelector('.likes-count').innerHTML = activePicture.likes;
+  galleryContainer.querySelector('.comments-count').innerHTML = activePicture.comments;
+};
 
 module.exports = new Gallery();
