@@ -1,5 +1,6 @@
 'use strict';
 
+var gallery = require('./gallery.js');
 
 var template = document.getElementById('picture-template');
 

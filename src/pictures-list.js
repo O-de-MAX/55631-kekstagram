@@ -7,6 +7,7 @@ var pictures = [];
 
 var load = require('./load');
 var getPicturesElement = require('./pictures');
+var gallery = require('./gallery.js');
 
 
 function hideFilters() {

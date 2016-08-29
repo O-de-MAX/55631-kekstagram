@@ -1,52 +1,43 @@
 'use strict';
 
-var getPicturesElement = require('./pictures');
-
-var galleryContainer = document.querySelector('.gallery-overlay');
-var galleryPreview = galleryContainer.querySelector('img');
-var galleryPictures = [];
-var activePicture = 0;
-
-var Gallery = function(data) {
-
-  this.data = data;
-  this.gallery = getPicturesElement(this.data, galleryContainer);
+var Gallery = function() {
 
   var self = this;
+
+  this.container = document.querySelector('.gallery-overlay');
+  this.preview = this.container.querySelector('img');
+  this.pictures = [];
+  this.activePicture = 0;
 
   this.onGalleryclick = function() {
     self.show();
   };
 
-  this.closeGallery = galleryContainer.querySelector('.gallery-overlay-close');
-  this.closeGallery.onclick = function() {
-    self.hide();
-  };
+  this.closeGallery = this.container.querySelector('.gallery-overlay-close');
+  this.closeGallery.addEventListener('click', self.hide);
 
-  this.gallery.onclick = function() {
-    self.setActivePicture();
-  };
+  this.gallery.addEventListener('click', new Gallery());
 
 }();
 
 Gallery.prototype.show = function(index) {
-  galleryContainer.classList.remove('invisible');
+  this.container.classList.remove('invisible');
   Gallery.prototype.setActivePicture(index);
 };
 
 Gallery.prototype.hide = function() {
-  galleryContainer.classList.add('invisible');
+  this.container.classList.add('invisible');
 };
 
 Gallery.prototype.setPictures = function(pictures) {
-  galleryPictures = pictures;
+  this.pictures = pictures;
 };
 
 Gallery.prototype.setActivePicture = function(index) {
-  activePicture = index;
-  galleryPreview.src = activePicture.url;
-  galleryContainer.querySelector('.likes-count').innerHTML = activePicture.likes;
-  galleryContainer.querySelector('.comments-count').innerHTML = activePicture.comments;
+  this.activePicture = index;
+  this.preview.src = this.activePicture.url;
+  this.container.querySelector('.likes-count').innerHTML = this.activePicture.likes;
+  this.container.querySelector('.comments-count').innerHTML = this.activePicture.comments;
 };
 
 module.exports = new Gallery();
