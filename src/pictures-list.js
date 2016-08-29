@@ -29,7 +29,7 @@ hideFilters();
 
 load('/api/pictures', function(data) {
   pictures = data;
-
+  console.log(pictures);
   renderPictures();
   showFilters();
 });
