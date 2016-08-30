@@ -2,4 +2,4 @@
 
 require('./upload');
 require('./resizer');
-require('./pictures-list');
+require('./pictures');
