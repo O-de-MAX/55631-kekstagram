@@ -10,11 +10,13 @@ var Gallery = function() {
 
   var self = this;
 
-  this.closeGallery.addEventListener('click', self.hide);
+  this.closeGallery.addEventListener('click', function() {
+    self.hide();
+  });
 
   this.preview.addEventListener('click', function() {
-    var nextIndex = this.activePicture + 1;
-    self.show(nextIndex % this.picture.length);
+    var nextIndex = self.activePicture + 1;
+    self.show(nextIndex % self.pictures.length);
   });
 
 };
