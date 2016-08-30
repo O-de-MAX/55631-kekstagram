@@ -1,25 +1,33 @@
 'use strict';
 
-var template = document.getElementById('picture-template');
+var filterElements = document.querySelector('.filters');
+var picturesContainer = document.querySelector('.pictures');
 
-var elementToClone;
-if ('content' in template) {
-  elementToClone = template.content.querySelector('.picture');
-} else {
-  elementToClone = template.querySelector('.picture');
+var pictures = [];
+
+var load = require('./load');
+var getPicturesElement = require('./picture');
+var gallery = require('./gallery.js');
+
+
+function hideFilters() {
+  filterElements.classList.add('hidden');
+}
+function showFilters() {
+  filterElements.classList.remove('hidden');
 }
 
-module.exports = function(picture) {
-  var pictureElement = elementToClone.cloneNode(true);
-  var imageElement = new Image();
+function renderPictures() {
+  pictures.forEach(function(picture, index) {
+    picturesContainer.appendChild(getPicturesElement(picture, index));
+  });
+}
 
-  imageElement.onload = function() {
-    pictureElement.querySelector('img').src = picture.url;
-  };
-  imageElement.onerror = function() {
-    pictureElement.classList.add('picture-load-failure');
-  };
-  imageElement.src = picture.url;
+hideFilters();
 
-  return pictureElement;
-};
+load('/api/pictures', function(data) {
+  pictures = data;
+  renderPictures();
+  gallery.setPictures(pictures);
+  showFilters();
+});
