@@ -10,10 +10,6 @@ var Gallery = function() {
 
   var self = this;
 
-  this.onGalleryClick = function() {
-    self.show();
-  };
-
   this.closeGallery.addEventListener('click', function() {
     self.hide();
   });

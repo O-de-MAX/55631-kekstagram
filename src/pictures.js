@@ -10,6 +10,8 @@ var Picture = require('./picture');
 var gallery = require('./gallery.js');
 
 
+
+
 function hideFilters() {
   filterElements.classList.add('hidden');
 }
@@ -18,8 +20,10 @@ function showFilters() {
 }
 
 function renderPictures() {
+
   pictures.forEach(function(picture, index) {
-    picturesContainer.appendChild(new Picture(picture, index));
+    var picture = new Picture(picture, index);
+    picturesContainer.appendChild(picture.element);
   });
 }
 

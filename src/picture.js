@@ -2,9 +2,9 @@
 
 var gallery = require('./gallery.js');
 
-var Picture = function(picture) {
+var Picture = function(picture, index) {
 
-  this.data = picture.url;
+  this.data = picture;
 
   this.template = document.getElementById('picture-template');
   this.templateContainer = 'content' in this.template ? this.template.content : this.template;
@@ -12,16 +12,18 @@ var Picture = function(picture) {
   this.element = this.templateContainer.querySelector('.picture').cloneNode(true);
 
 
-  this.element.querySelector('img').src = this.data;
+  this.element.querySelector('img').src = this.data.url;
 
 
-  this.element.addEventListener('click', gallery.onGalleryClick);
+  this.element.addEventListener('click', function() {
+    gallery.show(index);
+  });
 
 };
 
 
 Picture.prototype.remove = function() {
-  this.element.removeEventListener('click', gallery.onGalleryClick);
+  this.element.removeEventListener('click');
 };
 
-module.exports = new Picture();
+module.exports = Picture;
