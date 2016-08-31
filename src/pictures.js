@@ -11,7 +11,6 @@ var gallery = require('./gallery.js');
 
 
 
-
 function hideFilters() {
   filterElements.classList.add('hidden');
 }

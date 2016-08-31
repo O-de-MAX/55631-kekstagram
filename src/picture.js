@@ -14,16 +14,23 @@ var Picture = function(picture, index) {
 
   this.element.querySelector('img').src = this.data.url;
 
+  var img = this.element.querySelector('img');
 
-  this.element.addEventListener('click', function() {
+  img.onerror = function() {
+    img.classList.add('picture-load-failure');
+  };
+
+  img.src = this.data.url;
+
+  this.showGallery = function() {
     gallery.show(index);
-  });
+  };
+  this.element.addEventListener('click', this.showGallery);
 
 };
 
-
 Picture.prototype.remove = function() {
-  this.element.removeEventListener('click');
+  this.element.removeEventListener('click', this.showGallery);
 };
 
 module.exports = Picture;
