@@ -2,32 +2,35 @@
 
 var gallery = require('./gallery.js');
 
-var template = document.getElementById('picture-template');
+var Picture = function(picture, index) {
 
-var elementToClone;
-if ('content' in template) {
-  elementToClone = template.content.querySelector('.picture');
-} else {
-  elementToClone = template.querySelector('.picture');
-}
+  this.data = picture;
 
-var getPicturesElement = function(picture, index) {
-  var pictureElement = elementToClone.cloneNode(true);
-  var imageElement = new Image();
+  this.template = document.getElementById('picture-template');
+  this.templateContainer = 'content' in this.template ? this.template.content : this.template;
 
-  imageElement.onload = function() {
-    pictureElement.querySelector('img').src = picture.url;
+  this.element = this.templateContainer.querySelector('.picture').cloneNode(true);
+
+
+  this.element.querySelector('img').src = this.data.url;
+
+  var img = this.element.querySelector('img');
+
+  img.onerror = function() {
+    img.parentNode.classList.add('picture-load-failure');
   };
-  imageElement.onerror = function() {
-    pictureElement.classList.add('picture-load-failure');
-  };
-  imageElement.src = picture.url;
 
-  pictureElement.addEventListener('click', function() {
+  img.src = this.data.url;
+
+  this.showGallery = function() {
     gallery.show(index);
-  });
+  };
+  this.element.addEventListener('click', this.showGallery);
 
-  return pictureElement;
 };
 
-module.exports = getPicturesElement;
+Picture.prototype.remove = function() {
+  this.element.removeEventListener('click', this.showGallery);
+};
+
+module.exports = Picture;

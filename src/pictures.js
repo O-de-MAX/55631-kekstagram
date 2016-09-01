@@ -6,8 +6,9 @@ var picturesContainer = document.querySelector('.pictures');
 var pictures = [];
 
 var load = require('./load');
-var getPicturesElement = require('./picture');
+var Picture = require('./picture');
 var gallery = require('./gallery.js');
+
 
 
 function hideFilters() {
@@ -18,8 +19,10 @@ function showFilters() {
 }
 
 function renderPictures() {
+
   pictures.forEach(function(picture, index) {
-    picturesContainer.appendChild(getPicturesElement(picture, index));
+    picture = new Picture(picture, index);
+    picturesContainer.appendChild(picture.element);
   });
 }
 

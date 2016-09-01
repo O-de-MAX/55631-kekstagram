@@ -21,7 +21,6 @@ var Gallery = function() {
 
 };
 
-
 Gallery.prototype.show = function(index) {
   this.container.classList.remove('invisible');
   this.setActivePicture(index);
