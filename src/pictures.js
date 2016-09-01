@@ -21,7 +21,7 @@ function showFilters() {
 function renderPictures() {
 
   pictures.forEach(function(picture, index) {
-    var picture = new Picture(picture, index);
+    picture = new Picture(picture, index);
     picturesContainer.appendChild(picture.element);
   });
 }
