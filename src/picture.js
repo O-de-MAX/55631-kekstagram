@@ -17,7 +17,7 @@ var Picture = function(picture, index) {
   var img = this.element.querySelector('img');
 
   img.onerror = function() {
-    img.classList.add('picture-load-failure');
+    img.parentNode.classList.add('picture-load-failure');
   };
 
   img.src = this.data.url;
