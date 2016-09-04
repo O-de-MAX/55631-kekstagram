@@ -1,12 +1,17 @@
 'use strict';
 
-module.exports = function(url, callback) {
-  url += '?callback=JSONPCallback';
-  var newScript = document.createElement('script');
-  newScript.src = url;
-  document.body.appendChild(newScript);
 
-  window.JSONPCallback = function(data) {
-    callback(data);
+var load = function(url, callback) {
+
+  var xhr = new XMLHttpRequest();
+
+  xhr.onload = function(evt) {
+    var loadedData = JSON.parse(evt.target.response);
+    callback(loadedData);
   };
+
+  xhr.open('GET', url);
+  xhr.send();
 };
+
+module.exports = load;
