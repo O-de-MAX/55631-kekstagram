@@ -1,7 +1,7 @@
 'use strict';
 
 
-var load = function(url, callback) {
+var load = function(url, params, callback) {
 
   var xhr = new XMLHttpRequest();
 
@@ -10,7 +10,10 @@ var load = function(url, callback) {
     callback(loadedData);
   };
 
-  xhr.open('GET', url);
+  xhr.open('GET', url +
+    '?from=' + (params.from || 0) +
+    '&to=' + (params.to || Infinity) +
+    '&filter=' + (params.filter || 'default'));
   xhr.send();
 };
 
