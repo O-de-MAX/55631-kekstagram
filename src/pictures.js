@@ -6,6 +6,7 @@ var footer = document.querySelector('footer');
 
 var pageNumber = 0;
 var pageSize = 11;
+var throttleTimeOut = 100;
 
 var pictures = [];
 
@@ -31,9 +32,15 @@ function renderPictures() {
 
 hideFilters();
 
+var lastCall = Date.now();
+
 window.addEventListener('scroll', function() {
-  if (footer.getBoundingClientRect().bottom - window.innerHeight <= 0) {
-    load(pageNumber++);
+  if (Date.now() - lastCall >= throttleTimeOut) {
+    if (footer.getBoundingClientRect().bottom - window.innerHeight <= 0) {
+      load(pageNumber++);
+    }
+
+    lastCall = Date.now();
   }
 });
 
