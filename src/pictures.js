@@ -9,6 +9,8 @@ var load = require('./load');
 var Picture = require('./picture');
 var gallery = require('./gallery.js');
 
+var pageNumber = 0;
+var pageSize = 11;
 
 
 function hideFilters() {
@@ -28,8 +30,12 @@ function renderPictures() {
 
 hideFilters();
 
-load('/api/pictures', function(data) {
-  pictures = data;
+load('/api/pictures', {
+  from: pageNumber,
+  to: pageNumber + pageSize,
+  filter: 'default'
+}, function(loadedData) {
+  pictures = loadedData;
   renderPictures();
   gallery.setPictures(pictures);
   showFilters();

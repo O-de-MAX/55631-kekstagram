@@ -1,5 +1,3 @@
-2016/09/04-23:11:07.902 ae0 Recovering log #3
-2016/09/04-23:11:07.902 ae0 Level-0 table #5: started
-2016/09/04-23:11:07.914 ae0 Level-0 table #5: 865 bytes OK
-2016/09/04-23:11:07.929 ae0 Delete type=0 #3
-2016/09/04-23:11:07.929 ae0 Delete type=3 #2
+2016/09/05-13:17:58.270 2260 Recovering log #6
+2016/09/05-13:17:58.297 2260 Delete type=0 #6
+2016/09/05-13:17:58.297 2260 Delete type=3 #4
