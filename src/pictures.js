@@ -1,6 +1,8 @@
 'use strict';
+var loadUrl = '/api/pictures';
+var filters = document.querySelector('.filters');
 
-var filterElements = document.querySelector('.filters');
+
 var picturesContainer = document.querySelector('.pictures');
 var footer = document.querySelector('footer');
 
@@ -16,14 +18,13 @@ var gallery = require('./gallery.js');
 
 
 function hideFilters() {
-  filterElements.classList.add('hidden');
+  filters.classList.add('hidden');
 }
 function showFilters() {
-  filterElements.classList.remove('hidden');
+  filters.classList.remove('hidden');
 }
 
 function renderPictures() {
-
   pictures.forEach(function(picture, index) {
     picture = new Picture(picture, index);
     picturesContainer.appendChild(picture.element);
@@ -44,7 +45,15 @@ window.addEventListener('scroll', function() {
   }
 });
 
-load('/api/pictures', {
+filters.addEventListener('change', changeFilters, true);
+
+function changeFilters(evt) {
+  picturesContainer.innerHTML = '';
+  pageNumber = 0;
+  load(evt.target.id);
+}
+
+load(loadUrl, {
   from: pageNumber,
   to: pageNumber + pageSize,
   filter: 'default'
