@@ -7,6 +7,7 @@ var picturesContainer = document.querySelector('.pictures');
 var footer = document.querySelector('footer');
 
 var activeFilter;
+var isLoading = false;
 var pageNumber = 0;
 var pageSize = 11;
 var throttleTimeOut = 100;
@@ -35,6 +36,8 @@ function renderPictures() {
 hideFilters();
 
 function loadPictures(filterID, activePageNumber) {
+  isLoading = true;
+
   load(loadUrl, {
     from: activePageNumber * pageSize,
     to: activePageNumber * pageSize + pageSize,
@@ -44,6 +47,10 @@ function loadPictures(filterID, activePageNumber) {
     renderPictures();
     gallery.setPictures(pictures);
     showFilters();
+    isLoading = false;
+    if (pictures.length === 0) {
+      window.removeEventListener('scroll', nextPage);
+    }
   });
 }
 
@@ -60,14 +67,16 @@ function changeFilters(filterID) {
 
 var lastCall = Date.now();
 
-window.addEventListener('scroll', function() {
+function nextPage() {
   if (Date.now() - lastCall >= throttleTimeOut) {
-    if (footer.getBoundingClientRect().bottom - window.innerHeight <= 0) {
-      loadPictures(activeFilter, pageNumber++);
+    if (footer.getBoundingClientRect().bottom - window.innerHeight < 100) {
+      loadPictures(activeFilter, ++pageNumber);
     }
 
     lastCall = Date.now();
   }
-});
+}
+
+window.addEventListener('scroll', nextPage);
 
 loadPictures();
