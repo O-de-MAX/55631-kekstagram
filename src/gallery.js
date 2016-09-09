@@ -43,4 +43,12 @@ Gallery.prototype.setActivePicture = function(index) {
   this.container.querySelector('.comments-count').innerHTML = this.pictures[index].comments;
 };
 
+Gallery.prototype.appendPictures = function(pictures) {
+  this.pictures = this.pictures.concat(pictures);
+};
+
+Gallery.prototype.clear = function() {
+  this.pictures = [];
+};
+
 module.exports = new Gallery();

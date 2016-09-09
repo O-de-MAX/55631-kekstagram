@@ -8,11 +8,10 @@ var footer = document.querySelector('footer');
 
 var activeFilter;
 var isLoading = false;
+var isEndReached = false;
 var pageNumber = 0;
 var pageSize = 11;
 var throttleTimeOut = 100;
-
-var pictures = [];
 
 var load = require('./load');
 var Picture = require('./picture');
@@ -26,7 +25,7 @@ function showFilters() {
   filters.classList.remove('hidden');
 }
 
-function renderPictures() {
+function renderPictures(pictures) {
   pictures.forEach(function(picture, index) {
     picture = new Picture(picture, index);
     picturesContainer.appendChild(picture.element);
@@ -42,14 +41,13 @@ function loadPictures(filterID, activePageNumber) {
     from: activePageNumber * pageSize,
     to: activePageNumber * pageSize + pageSize,
     filter: filterID
-  }, function(loadedData) {
-    pictures = loadedData;
-    renderPictures();
-    gallery.setPictures(pictures);
+  }, function(pictures) {
+    renderPictures(pictures);
+    gallery.appendPictures(pictures);
     showFilters();
     isLoading = false;
     if (pictures.length === 0) {
-      window.removeEventListener('scroll', nextPage);
+      isEndReached = true;
     }
   });
 }
@@ -62,21 +60,22 @@ function changeFilters(filterID) {
   picturesContainer.innerHTML = '';
   pageNumber = 0;
   activeFilter = filterID;
+  isEndReached = false;
+  gallery.clear();
   loadPictures(filterID, pageNumber);
-  nextPage();
 }
 
 
 var lastCall = Date.now();
 
 function nextPage() {
-  if (isLoading) {
+
+  if (isLoading || isEndReached) {
     return;
   }
   if (Date.now() - lastCall >= throttleTimeOut) {
     if (footer.getBoundingClientRect().bottom - window.innerHeight < 100) {
       loadPictures(activeFilter, ++pageNumber);
-      console.log(pictures);
     }
 
     lastCall = Date.now();
