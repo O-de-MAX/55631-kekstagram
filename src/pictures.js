@@ -63,14 +63,20 @@ function changeFilters(filterID) {
   pageNumber = 0;
   activeFilter = filterID;
   loadPictures(filterID, pageNumber);
+  nextPage();
 }
+
 
 var lastCall = Date.now();
 
 function nextPage() {
+  if (isLoading) {
+    return;
+  }
   if (Date.now() - lastCall >= throttleTimeOut) {
     if (footer.getBoundingClientRect().bottom - window.innerHeight < 100) {
       loadPictures(activeFilter, ++pageNumber);
+      console.log(pictures);
     }
 
     lastCall = Date.now();
@@ -79,4 +85,4 @@ function nextPage() {
 
 window.addEventListener('scroll', nextPage);
 
-loadPictures();
+loadPictures(activeFilter, pageNumber);
