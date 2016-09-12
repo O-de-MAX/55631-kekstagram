@@ -147,7 +147,9 @@
    * и показывается форма кадрирования.
    * @param {Event} evt
    */
-  uploadForm.onchange = function(evt) {
+
+  uploadForm.addEventListener('click', function(evt) {
+
     var element = evt.target;
     if (element.id === 'upload-file') {
       // Проверка типа загружаемого файла, тип должен быть изображением
@@ -176,14 +178,15 @@
         showMessage(Action.ERROR);
       }
     }
-  };
+  }
 
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
    * @param {Event} evt
    */
-  resizeForm.onreset = function() {
+
+  resizeForm.getElementById('resize-prev').addEventListener('click', function() {
     cleanupResizer();
     updateBackground();
     uploadForm.reset();
