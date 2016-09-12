@@ -186,6 +186,7 @@
    * @param {Event} evt
    */
 
+
   document.getElementById('resize-prev').addEventListener('click', function() {
     cleanupResizer();
     updateBackground();
@@ -197,9 +198,12 @@
   resizeForm.addEventListener('input', function() {
     if (resizeFormIsValid()) {
       resizeForm.fwd.removeAttribute('disabled');
+      currentResizer.setConstraint(resizeForm.x.value, resizeForm.y.value, resizeForm.size.value);
     } else {
       resizeForm.fwd.setAttribute('disabled', 'disabled');
     }
+
+
   });
 
   /**
