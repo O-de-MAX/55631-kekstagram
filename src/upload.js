@@ -180,12 +180,20 @@
     }
   });
 
+  window.addEventListener('resizerchange', function() {
+    var parameter = currentResizer.getConstraint();
+    console.log(parameter);
+    resizeForm.x.value = parameter.x;
+    resizeForm.y.value = parameter.y;
+    resizeForm.size.value = parameter.side;
+    validateResizeForm();
+  });
+
   /**
    * Обработка сброса формы кадрирования. Возвращает в начальное состояние
    * и обновляет фон.
    * @param {Event} evt
    */
-
 
   document.getElementById('resize-prev').addEventListener('click', function() {
     cleanupResizer();
@@ -196,15 +204,16 @@
   });
 
   resizeForm.addEventListener('input', function() {
+    currentResizer.setConstraint(+resizeForm.x.value, +resizeForm.y.value, +resizeForm.size.value);
+  });
+
+  function validateResizeForm() {
     if (resizeFormIsValid()) {
       resizeForm.fwd.removeAttribute('disabled');
-      currentResizer.setConstraint(resizeForm.x.value, resizeForm.y.value, resizeForm.size.value);
     } else {
       resizeForm.fwd.setAttribute('disabled', 'disabled');
     }
-
-
-  });
+  }
 
   /**
    * Обработка отправки формы кадрирования. Если форма валидна, экспортирует
@@ -290,18 +299,6 @@
     // состояние или просто перезаписывать.
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
   });
-
-
-  function resizerChange() {
-    currentResizer.getConstraint();
-    var parameter = currentResizer.getConstraint();
-    console.log(parameter);
-    document.getElementById('resize-x').value = parameter.x;
-    document.getElementById('resize-y').value = parameter.y;
-    document.getElementById('resize-size').value = parameter.side;
-  }
-
-  window.addEventListener('resizerchange', resizerChange);
 
 
   function restoreFilterFromCookie() {
