@@ -23,6 +23,9 @@ function hideFilters() {
 }
 function showFilters() {
   filters.classList.remove('hidden');
+  if (activeFilter) {
+    document.getElementById(activeFilter).checked = true;
+  }
 }
 
 function renderPictures(pictures) {
