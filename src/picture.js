@@ -11,7 +11,6 @@ var Picture = function(picture, index) {
 
   this.element = this.templateContainer.querySelector('.picture').cloneNode(true);
 
-
   this.element.querySelector('img').src = this.data.url;
 
   var img = this.element.querySelector('img');
