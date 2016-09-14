@@ -23,8 +23,12 @@ function hideFilters() {
 }
 function showFilters() {
   filters.classList.remove('hidden');
+
   if (activeFilter) {
-    document.getElementById(activeFilter).checked = true;
+    var filterNode = document.getElementById(activeFilter);
+  }
+  if (filterNode) {
+    filterNode.checked = true;
   }
 }
 
