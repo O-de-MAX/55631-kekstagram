@@ -6,7 +6,7 @@ var filters = document.querySelector('.filters');
 var picturesContainer = document.querySelector('.pictures');
 var footer = document.querySelector('footer');
 
-var activeFilter;
+var activeFilter = localStorage.getItem('filter');
 var isLoading = false;
 var isEndReached = false;
 var pageNumber = 0;
@@ -37,6 +37,10 @@ hideFilters();
 function loadPictures(filterID, activePageNumber) {
   isLoading = true;
 
+  if (activeFilter) {
+    filterID = activeFilter;
+  }
+
   load(loadUrl, {
     from: activePageNumber * pageSize,
     to: activePageNumber * pageSize + pageSize,
@@ -60,6 +64,7 @@ function changeFilters(filterID) {
   picturesContainer.innerHTML = '';
   pageNumber = 0;
   activeFilter = filterID;
+  localStorage.setItem('filter', activeFilter);
   isEndReached = false;
   gallery.clear();
   loadPictures(filterID, pageNumber);
