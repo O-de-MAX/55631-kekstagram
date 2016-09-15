@@ -8,23 +8,26 @@ var Gallery = function() {
   this.pictures = [];
   this.activePicture = 0;
 
-  var self = this;
+  this.closeGalleryOnClick = this.closeGalleryOnClick.bind(this);
+  this.closeGallery.addEventListener('click', this.closeGalleryOnClick);
 
-  this.closeGallery.addEventListener('click', function() {
-    self.hide();
-  });
+  this.previewOnClick = this.previewOnClick.bind(this);
+  this.preview.addEventListener('click', this.previewOnClick);
 
-  this.preview.addEventListener('click', function() {
-    var nextIndex = self.activePicture + 1;
-    self.show(nextIndex % self.pictures.length);
-  });
+};
 
+Gallery.prototype.previewOnClick = function() {
+  var nextIndex = this.activePicture + 1;
+  this.show(nextIndex % this.pictures.length);
+};
+
+Gallery.prototype.closeGalleryOnClick = function() {
+  this.hide();
 };
 
 Gallery.prototype.show = function(index) {
   this.container.classList.remove('invisible');
   this.setActivePicture(index);
-
 };
 
 Gallery.prototype.hide = function() {

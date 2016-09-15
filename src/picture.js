@@ -5,12 +5,12 @@ var gallery = require('./gallery.js');
 var Picture = function(picture, index) {
 
   this.data = picture;
+  this.index = index;
 
   this.template = document.getElementById('picture-template');
   this.templateContainer = 'content' in this.template ? this.template.content : this.template;
 
   this.element = this.templateContainer.querySelector('.picture').cloneNode(true);
-
 
   this.element.querySelector('img').src = this.data.url;
 
@@ -22,11 +22,14 @@ var Picture = function(picture, index) {
 
   img.src = this.data.url;
 
-  this.showGallery = function() {
-    gallery.show(index);
-  };
+  this.showGallery = this.showGallery.bind(this);
   this.element.addEventListener('click', this.showGallery);
 
+};
+
+
+Picture.prototype.showGallery = function() {
+  gallery.show(this.index);
 };
 
 Picture.prototype.remove = function() {
