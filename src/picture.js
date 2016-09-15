@@ -2,9 +2,10 @@
 
 var gallery = require('./gallery.js');
 
-var Picture = function(picture) {
+var Picture = function(picture, index) {
 
   this.data = picture;
+  this.index = index;
 
   this.template = document.getElementById('picture-template');
   this.templateContainer = 'content' in this.template ? this.template.content : this.template;
@@ -27,8 +28,8 @@ var Picture = function(picture) {
 };
 
 
-Picture.prototype.showGallery = function(index) {
-  gallery.show(index);
+Picture.prototype.showGallery = function() {
+  gallery.show(this.index);
 };
 
 Picture.prototype.remove = function() {
