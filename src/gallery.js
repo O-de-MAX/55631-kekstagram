@@ -28,7 +28,6 @@ Gallery.prototype.closeGalleryOnClick = function() {
 Gallery.prototype.show = function(index) {
   this.container.classList.remove('invisible');
   this.setActivePicture(index);
-
 };
 
 Gallery.prototype.hide = function() {

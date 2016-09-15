@@ -2,7 +2,7 @@
 
 var gallery = require('./gallery.js');
 
-var Picture = function(picture, index) {
+var Picture = function(picture) {
 
   this.data = picture;
 
@@ -21,11 +21,14 @@ var Picture = function(picture, index) {
 
   img.src = this.data.url;
 
-  this.showGallery = function() {
-    gallery.show(index);
-  };
+  this.showGallery = this.showGallery.bind(this);
   this.element.addEventListener('click', this.showGallery);
 
+};
+
+
+Picture.prototype.showGallery = function(index) {
+  gallery.show(index);
 };
 
 Picture.prototype.remove = function() {
